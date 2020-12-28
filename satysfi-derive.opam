@@ -18,7 +18,7 @@ dev-repo: "git+https://github.com/yabaitechtokyo/satysfi-derive.git"
 depends: [
   "satysfi" {>= "0.0.5" & < "0.0.6"}
   "satysfi-dist"
-  "satysfi-base" {>= 1.4.0}
+  "satysfi-base" {>= "1.4.0" & < "2.0.0"}
   "satyrographos" {>= "0.0.2.6" & < "0.0.3"}
 ]
 build: [ ]
