@@ -6,4 +6,4 @@
     ((packageDir "src")
 	))
   (opam "satysfi-derive.opam")
-  (dependencies ()))
+  (dependencies ((base ()))))
