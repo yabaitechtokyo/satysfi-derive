@@ -1,5 +1,5 @@
 @require: gr
-@import: ../../option-ext
+@require: base/option-ext
 @import: ast
 @import: config
 @import: line

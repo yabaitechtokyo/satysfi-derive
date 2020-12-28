@@ -1,4 +1,4 @@
-@import: ../option-ext
+@require: base/option-ext
 @import: derive/ast
 @import: derive/config
 @import: derive/line

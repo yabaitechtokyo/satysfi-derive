@@ -1,6 +1,6 @@
 @require: math
 @import: ../util
-@import: ../../../src/typeset/derive
+@import: ../../../src/derive
 
 open Derive in
 satysfi-it ${
