@@ -1,0 +1,29 @@
+opam-version: "2.0"
+name: "satysfi-derive"
+version: "1.0.0"
+synopsis: "A collection of utility functions and modules for SATySFi"
+description: """
+This is a collection of utility functions and modules for SATySFi. Because the library bundled with the default installation configuration of SATySFi is currently not rich enough, this project aims to provide a complementary library sufficient for most situations in typesetting.
+
+this requires Satyrographos to install. See https://github.com/na4zagin3/satyrographos.
+"""
+maintainer: "Yuito Murase <yuito@acupof.coffee>"
+authors: [
+  "Yuito Murase <yuito@acupof.coffee>"
+]
+license: "MIT"
+homepage: "https://github.com/yabaitechtokyo/satysfi-derive"
+bug-reports: "https://github.com/yabaitechtokyo/satysfi-derive/issues"
+dev-repo: "git+https://github.com/yabaitechtokyo/satysfi-derive.git"
+depends: [
+  "satysfi" {>= "0.0.5" & < "0.0.6"}
+  "satysfi-dist"
+  "satyrographos" {>= "0.0.2.6" & < "0.0.3"}
+]
+build: [ ]
+install: [
+  ["satyrographos" "opam" "install"
+   "--name" "derive"
+   "--prefix" "%{prefix}%"
+   "--script" "%{build}%/Satyristes"]
+]

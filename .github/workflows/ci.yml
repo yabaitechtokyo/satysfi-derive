@@ -18,7 +18,7 @@ jobs:
           eval $(opam env)
           opam update
           opam pin add --verbose --yes "."
-          satyrographos install -l base
+          satyrographos install -l derive
       - name: Run regression tests
         run: |
           export HOME=/root

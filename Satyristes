@@ -1,0 +1,9 @@
+(version "0.0.2")
+(library
+  (name "derive")
+  (version "1.0.0")
+  (sources
+    ((packageDir "src")
+	))
+  (opam "satysfi-derive.opam")
+  (dependencies ()))
