@@ -17,6 +17,11 @@ jobs:
           opam update
           opam pin add "file://${PWD}"
           satyrographos install -l derive
+      - name: Try compile file
+        run: |
+          export HOME=/root
+          eval $(opam env)
+          satysfi __test__/satysrc/check-opam.saty
   regression-test:
     name: Regression tests
     runs-on: ubuntu-latest

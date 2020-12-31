@@ -1,0 +1,20 @@
+@require: math
+@require: base/typeset/satysfi-it
+@require: derive/derive
+
+open Derive in
+satysfi-it ${
+  \proven!(
+    open DeriveDSL in
+    derive ${ \vdash A \wedge \paren {B \vee C} }
+    |> by {${\wedge} I}
+    |> from [
+        assume ${\vdash A};
+        derive ${\vdash B \vee C}
+        |> by {${\vee} I}
+        |> from [
+          assume ${\vdash B};
+        ];
+    ]
+  )
+}
