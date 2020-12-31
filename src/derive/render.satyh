@@ -1,8 +1,8 @@
 @require: gr
 @require: base/option-ext
 @import: ast
-@import: config
 @import: line
+@import: ../config
 
 module DeriveRender : sig
 
