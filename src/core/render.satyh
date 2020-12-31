@@ -43,8 +43,8 @@ end = struct
 		let make-bar ctx config line llabel rlabel bar-width =
 			let bar-with-label-width = bar-width +' (get-natural-width llabel) +' (get-natural-width rlabel) in
 			let bar-thickness = config |> get-bar-thickness in
-			let bar-margin = config |> get-bar-top-bottom-margin in
-			let label-margin = config |> get-label-left-right-margin in
+			let bar-margin = config |> get-line-vertical-margin in
+			let label-margin = config |> get-line-horizonal-margin in
 			inline-graphics
 				bar-with-label-width
 				(bar-thickness +' bar-margin)
@@ -69,7 +69,7 @@ end = struct
 		| LabelRight -> llabel-text |> Option.map (read-inline ctx) |> Option.unwrap-or inline-nil
 		in
 		let bar = make-bar ctx config line llabel rlabel bar-width in
-		let label-margin = config |> get-label-left-right-margin in
+		let label-margin = config |> get-line-horizonal-margin in
 		(|
 			rendered = bar;
 			layout   = (|
@@ -109,7 +109,7 @@ end = struct
 		|)
 
 	let render-conclusion ctx config conclusion =
-		let padding = config |> DeriveConfig.get-content-left-right-padding in
+		let padding = config |> DeriveConfig.get-assumption-spacing in
 		let rendered = inline-skip padding ++ embed-math ctx conclusion ++ inline-skip padding in
 		(|
 			rendered = rendered;
