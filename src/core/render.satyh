@@ -14,6 +14,16 @@ module DeriveRender : sig
 
 end = struct
 
+  %       B C
+  %  (P) -----
+  %        A    D
+  %       -------- (Q)
+  %        E or F
+  %  <----><----><--->
+  %     1     2    3
+  % 1. left-width
+  % 2. inner-width
+  % 3. right-width
   type layout = (|
     left-width: length;
     right-width: length;
@@ -43,8 +53,8 @@ end = struct
     let make-bar ctx config line llabel rlabel bar-width =
       let bar-with-label-width = bar-width +' (get-natural-width llabel) +' (get-natural-width rlabel) in
       let bar-thickness = config |> get-bar-thickness in
-      let bar-margin = config |> get-bar-top-bottom-margin in
-      let label-margin = config |> get-label-left-right-margin in
+      let bar-margin = config |> get-line-vertical-margin in
+      let label-margin = config |> get-line-horizontal-margin in
       inline-graphics
         bar-with-label-width
         (bar-thickness +' bar-margin)
@@ -69,7 +79,7 @@ end = struct
     | LabelRight -> llabel-text |> Option.map (read-inline ctx) |> Option.unwrap-or inline-nil
     in
     let bar = make-bar ctx config line llabel rlabel bar-width in
-    let label-margin = config |> get-label-left-right-margin in
+    let label-margin = config |> get-line-horizontal-margin in
     (|
       rendered = bar;
       layout   = (|
@@ -109,7 +119,7 @@ end = struct
     |)
 
   let render-conclusion ctx config conclusion =
-    let padding = config |> DeriveConfig.get-content-left-right-padding in
+    let padding = config |> DeriveConfig.get-content-padding in
     let rendered = inline-skip padding ++ embed-math ctx conclusion ++ inline-skip padding in
     (|
       rendered = rendered;
@@ -134,7 +144,7 @@ end = struct
       match ladj with
       | None -> med-r
       | Some _ ->
-        let spacing = 10pt in
+        let spacing = config |> DeriveConfig.get-assumption-spacing in
         let new-rendered = med-l#rendered ++ (inline-skip spacing) ++ med-r#rendered in
         let new-inner-width = med-l#layout#inner-width +' med-l#layout#right-width +' spacing +' med-r#layout#left-width +' med-r#layout#inner-width in
         (|
