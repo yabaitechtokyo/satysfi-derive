@@ -17,10 +17,10 @@ module DeriveLine : sig
   val standard-line : t
   %% solid line
 
-  val no-line       : t
+  val no-line : t
   %% no line
 
-  val dotted-line   : length -> length -> t
+  val dotted-line : length -> length -> t
   %% [dotted-line dot-len spacing] is a dotted line where dot length is
   %% [dot-len] and spacing is [spacing]
 

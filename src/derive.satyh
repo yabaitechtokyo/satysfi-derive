@@ -1,8 +1,8 @@
 %% derive.satyh provides a command and DSL for displaying derivation trees.
 
 @require: base/option-ext
-@import: derive/ast
-@import: derive/render
+@import: core/ast
+@import: core/render
 @import: config
 @import: line
 
