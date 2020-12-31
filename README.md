@@ -35,7 +35,6 @@ will render the following pdf:
 * Well maintaned codebase with regression tests.
 
 ## How to install
-⚠ satysfi-derive is not published yet.
 ```
 $ opam install satysfi-derive
 $ satyrographos install -l derive
