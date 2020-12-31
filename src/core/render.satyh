@@ -54,7 +54,7 @@ end = struct
 			let bar-with-label-width = bar-width +' (get-natural-width llabel) +' (get-natural-width rlabel) in
 			let bar-thickness = config |> get-bar-thickness in
 			let bar-margin = config |> get-line-vertical-margin in
-			let label-margin = config |> get-line-horizonal-margin in
+			let label-margin = config |> get-line-horizontal-margin in
 			inline-graphics
 				bar-with-label-width
 				(bar-thickness +' bar-margin)
@@ -79,7 +79,7 @@ end = struct
 		| LabelRight -> llabel-text |> Option.map (read-inline ctx) |> Option.unwrap-or inline-nil
 		in
 		let bar = make-bar ctx config line llabel rlabel bar-width in
-		let label-margin = config |> get-line-horizonal-margin in
+		let label-margin = config |> get-line-horizontal-margin in
 		(|
 			rendered = bar;
 			layout   = (|

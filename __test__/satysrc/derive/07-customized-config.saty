@@ -9,7 +9,7 @@ let my-derive-config = open DeriveConfig in
     |> set-main-label-position LabelRight
     |> set-default-line (DeriveLine.dotted-line 5pt 5pt)
     |> set-line-vertical-margin 10pt
-    |> set-line-horizonal-margin 10pt
+    |> set-line-horizontal-margin 10pt
     |> set-bar-thickness 10pt
     |> set-content-padding 30pt
     |> set-assumption-spacing 10pt
@@ -25,4 +25,3 @@ satysfi-it ${
     ]
   )
 }
-
