@@ -14,6 +14,16 @@ module DeriveRender : sig
 
 end = struct
 
+	%       B C
+	%  (P) -----
+	%        A    D
+	%       -------- (Q)
+	%        E or F
+	%  <----><----><--->
+	%     1     2    3
+	% 1. left-width
+	% 2. inner-width
+	% 3. right-width
 	type layout = (|
 		left-width: length;
 		right-width: length;
@@ -109,7 +119,7 @@ end = struct
 		|)
 
 	let render-conclusion ctx config conclusion =
-		let padding = config |> DeriveConfig.get-assumption-spacing in
+		let padding = config |> DeriveConfig.get-content-padding in
 		let rendered = inline-skip padding ++ embed-math ctx conclusion ++ inline-skip padding in
 		(|
 			rendered = rendered;
@@ -134,7 +144,7 @@ end = struct
 			match ladj with
 			| None -> med-r
 			| Some _ ->
-				let spacing = 10pt in
+				let spacing = config |> DeriveConfig.get-assumption-spacing in
 				let new-rendered = med-l#rendered ++ (inline-skip spacing) ++ med-r#rendered in
 				let new-inner-width = med-l#layout#inner-width +' med-l#layout#right-width +' spacing +' med-r#layout#left-width +' med-r#layout#inner-width in
 				(|

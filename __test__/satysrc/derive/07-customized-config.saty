@@ -11,7 +11,8 @@ let my-derive-config = open DeriveConfig in
     |> set-line-vertical-margin 10pt
     |> set-line-horizonal-margin 10pt
     |> set-bar-thickness 10pt
-    |> set-assumption-spacing 30pt
+    |> set-content-padding 30pt
+    |> set-assumption-spacing 10pt
 in
 satysfi-it ${
   \proven ?:!(my-derive-config) !(

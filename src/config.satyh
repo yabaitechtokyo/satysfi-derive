@@ -41,6 +41,10 @@ module DeriveConfig : sig
   val set-bar-thickness : length -> t -> t
   %% Get/Set bar-thickness
 
+  val get-content-padding : t -> length
+  val set-content-padding : length -> t -> t
+  %% Get/Set content-padding
+
   val get-assumption-spacing : t -> length
   val set-assumption-spacing : length -> t -> t
   %% Get/Set assumption-spacing
@@ -54,6 +58,7 @@ end = struct
     line-vertical-margin : length;
     line-horizonal-margin : length;
     bar-thickness : length;
+    content-padding : length;
     assumption-spacing : length;
   |)
   type t = u
@@ -64,15 +69,17 @@ end = struct
     line-vertical-margin = 2pt;
     line-horizonal-margin = 3pt;
     bar-thickness = 0.5pt;
-    assumption-spacing = 3pt;
+    content-padding = 3pt;
+    assumption-spacing = 10pt;
   |)
 
-  let get-main-label-position ast = ast#main-label-position
-  let get-default-line ast = ast#default-line
-  let get-line-vertical-margin ast = ast#line-vertical-margin
-  let get-line-horizonal-margin ast = ast#line-horizonal-margin
-  let get-bar-thickness ast = ast#bar-thickness
-  let get-assumption-spacing ast = ast#assumption-spacing
+  let get-main-label-position config = config#main-label-position
+  let get-default-line config = config#default-line
+  let get-line-vertical-margin config = config#line-vertical-margin
+  let get-line-horizonal-margin config = config#line-horizonal-margin
+  let get-bar-thickness config = config#bar-thickness
+  let get-content-padding config = config#content-padding
+  let get-assumption-spacing config = config#assumption-spacing
 
   let set-main-label-position value ast = (|
     ast with
@@ -97,6 +104,11 @@ end = struct
   let set-bar-thickness value ast = (|
     ast with
     bar-thickness = value;
+  |)
+
+  let set-content-padding value ast = (|
+    ast with
+    content-padding = value;
   |)
 
   let set-assumption-spacing value ast = (|
