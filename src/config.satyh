@@ -1,4 +1,4 @@
-@import: derive/line
+@import: line
 
 %% Default label position
 type label-pos-t =

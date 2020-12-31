@@ -1,4 +1,4 @@
-@import: line
+@import: ../line
 
 module DeriveAst : sig
 

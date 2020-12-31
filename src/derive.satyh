@@ -2,9 +2,9 @@
 
 @require: base/option-ext
 @import: derive/ast
-@import: derive/line
 @import: derive/render
 @import: config
+@import: line
 
 module Derive : sig
   %% {1 Commands}
