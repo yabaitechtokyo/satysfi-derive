@@ -3,6 +3,20 @@ name: CI
 on: [push, pull_request]
 
 jobs:
+  check-opam-sanity:
+    name: Check sanity of opam/Satyristes
+    runs-on: ubuntu-latest
+    container:
+      image: amutake/satysfi:0.0.5
+    steps:
+      - uses: actions/checkout@v1
+      - name: Try install derive
+        run: |
+          export HOME=/root
+          eval $(opam env)
+          opam update
+          opam pin add "file://${PWD}"
+          satyrographos install -l derive
   regression-test:
     name: Regression tests
     runs-on: ubuntu-latest
