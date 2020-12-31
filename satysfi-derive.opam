@@ -1,11 +1,11 @@
 opam-version: "2.0"
 name: "satysfi-derive"
 version: "1.0.0"
-synopsis: "A collection of utility functions and modules for SATySFi"
+synopsis: "SATySFi commands and DSL for displaying derivation trees with maintainable code."
 description: """
-This is a collection of utility functions and modules for SATySFi. Because the library bundled with the default installation configuration of SATySFi is currently not rich enough, this project aims to provide a complementary library sufficient for most situations in typesetting.
+SATySFi commands and DSL for displaying derivation trees with maintainable code.
 
-this requires Satyrographos to install. See https://github.com/na4zagin3/satyrographos.
+This requires Satyrographos to install. See https://github.com/na4zagin3/satyrographos.
 """
 maintainer: "Yuito Murase <yuito@acupof.coffee>"
 authors: [
