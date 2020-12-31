@@ -1,9 +1,9 @@
 opam-version: "2.0"
 name: "satysfi-derive"
 version: "1.0.0"
-synopsis: "SATySFi commands and DSL for displaying derivation trees with maintainable code."
+synopsis: "SATySFi commands and DSL for displaying derivation trees with maintainable code"
 description: """
-SATySFi commands and DSL for displaying derivation trees with maintainable code.
+SATySFi commands and DSL for displaying derivation trees with maintainable code
 
 This requires Satyrographos to install. See https://github.com/na4zagin3/satyrographos.
 """
