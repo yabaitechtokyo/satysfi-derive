@@ -89,7 +89,7 @@ derive ${A \wedge B}
 * `no-line`: no line
 * `dotted-line dot-len spacing`: dotted line where dot length is `dot-len` and spacing is `spacing`
 
-Since `standard-line` and `no-line` are used by default in `derive` and `assume`, respectively, you want to use `withLine` only when you use `dotted-line`.
+Since `standard-line` and `no-line` are used by default in `derive` and `assume`, respectively, you want to use `withLine` only when you use `dotted-line`. If you want to define other lines on your own, consider using `DeriveLine.make` ([source code](https://github.com/yabaitechtokyo/satysfi-derive/blob/main/src/line.satyh#L8-L11)).
 
 
 ```ml
