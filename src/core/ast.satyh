@@ -1,67 +1,81 @@
+@require: base/option-ext
 @import: ../line
 
 module DeriveAst : sig
 
-    type t
-    
-    val make : inline-text option -> inline-text option -> math -> t list -> DeriveLine.t option -> t
+  type t
+  %% The type for abstract structure of derivation trees.
+  %% A derivation tree consists of:
 
-    val get-main-label : t -> inline-text option
-    val get-sub-label : t -> inline-text option
-    val get-conclusion : t ->  math
-    val get-assumptions : t -> t list
-    val get-line : t -> DeriveLine.t option
+  val make : inline-text option -> inline-text option
+             -> math -> t list -> DeriveLine.t option -> t
+  %% [make main-label-opt sub-label-opt conclusion assumptions line-opt]
+  %% constructs a derivation tree ast with given parameters.
 
-    val set-main-label : inline-text -> t -> t
-    val set-sub-label : inline-text -> t -> t
-    val set-assumptions : t list -> t -> t
-    val set-line : DeriveLine.t -> t -> t
+  val get-conclusion : t ->  math
+  %% Get conclusion
+
+  val get-assumptions : t -> t list
+  val set-assumptions : t list -> t -> t
+  %% Get/Set assumptions
+
+  val get-line : t -> DeriveLine.t option
+  val set-line : DeriveLine.t -> t -> t
+  %% Get/Set line
+
+  val get-main-label : t -> inline-text option
+  val set-main-label : inline-text -> t -> t
+  %% Get/Set label in the main position
+
+  val get-sub-label : t -> inline-text option
+  val set-sub-label : inline-text -> t -> t
+  %% Get/Set label in the sub position
 
 end = struct
 
-    % cf. https://github.com/nyuichi/satysfi-base/pull/19#discussion_r361930019
-    type u =
-    | Ast of inline-text option
-        * inline-text option
-        * math
-        * u list
-        * DeriveLine.t option
-    type t = u
+  % cf. https://github.com/nyuichi/satysfi-base/pull/19#discussion_r361930019
+  type u =
+  | Ast of inline-text option
+      * inline-text option
+      * math
+      * u list
+      * DeriveLine.t option
+  type t = u
 
-    let make mlabel slabel conclusion assumptions line =
-        Ast(mlabel, slabel, conclusion, assumptions, line)
-
-
-    let get-main-label ast = match ast with
-    | Ast(mlabel, _, _, _, _) -> mlabel
-
-    let get-sub-label ast = match ast with
-    | Ast(_, slabel, _, _, _) -> slabel
-
-    let get-conclusion ast = match ast with
-    | Ast(_, _, conclusion, _, _) -> conclusion
-
-    let get-assumptions ast = match ast with
-    | Ast(_, _, _, assumptions, _) -> assumptions
-
-    let get-line ast = match ast with
-    | Ast(_, _, _, _, line) -> line
+  let make mlabel slabel conclusion assumptions line =
+      Ast(mlabel, slabel, conclusion, assumptions, line)
 
 
-    let set-main-label mlabel ast = match ast with
-    | Ast(_, slabel, conclusion, assumptions, line) ->
-        Ast(Option.some(mlabel), slabel, conclusion, assumptions, line)
+  let get-main-label ast = match ast with
+  | Ast(mlabel, _, _, _, _) -> mlabel
 
-    let set-sub-label slabel ast = match ast with
-    | Ast(mlabel, _, conclusion, assumptions, line) ->
-        Ast(mlabel, Option.some(slabel), conclusion, assumptions, line)
+  let get-sub-label ast = match ast with
+  | Ast(_, slabel, _, _, _) -> slabel
 
-    let set-assumptions assumptions ast = match ast with
-    | Ast(mlabel, slabel, conclusion, _, line) ->
-        Ast(mlabel, slabel, conclusion, assumptions, line)
+  let get-conclusion ast = match ast with
+  | Ast(_, _, conclusion, _, _) -> conclusion
 
-    let set-line line ast = match ast with
-    | Ast(mlabel, slabel, conclusion, assumptions, _) ->
-        Ast(mlabel, slabel, conclusion, assumptions, Option.some(line))
+  let get-assumptions ast = match ast with
+  | Ast(_, _, _, assumptions, _) -> assumptions
+
+  let get-line ast = match ast with
+  | Ast(_, _, _, _, line) -> line
+
+
+  let set-main-label mlabel ast = match ast with
+  | Ast(_, slabel, conclusion, assumptions, line) ->
+      Ast(Option.some(mlabel), slabel, conclusion, assumptions, line)
+
+  let set-sub-label slabel ast = match ast with
+  | Ast(mlabel, _, conclusion, assumptions, line) ->
+      Ast(mlabel, Option.some(slabel), conclusion, assumptions, line)
+
+  let set-assumptions assumptions ast = match ast with
+  | Ast(mlabel, slabel, conclusion, _, line) ->
+      Ast(mlabel, slabel, conclusion, assumptions, line)
+
+  let set-line line ast = match ast with
+  | Ast(mlabel, slabel, conclusion, assumptions, _) ->
+      Ast(mlabel, slabel, conclusion, assumptions, Option.some(line))
 
 end
