@@ -1,52 +1,99 @@
+%% derive.satyh provides a command and DSL for displaying derivation trees.
+
 @require: base/option-ext
-@import: derive/ast
-@import: derive/config
-@import: derive/line
-@import: derive/render
+@import: core/ast
+@import: core/render
+@import: config
+@import: line
 
 module Derive : sig
+  %% {1 Commands}
 
-    val \proven : [DeriveConfig.t?; DeriveAst.t] math-cmd
+  val \proven : [DeriveConfig.t?; DeriveAst.t] math-cmd
+  %% [\proven ?:!(config) !(ast);] displays a derivation tree that corresponds
+  %% to [ast] with a typesetting config [config]. When [config] is not given,
+  %% [DeriveConfig.default] is used as a default config.
 
 end = struct
 
-    open DeriveRender
+  open DeriveRender
 
-    let-math \proven ?:config ast = render-math (config |> Option.unwrap-or DeriveConfig.default) ast
+  let-math \proven ?:config ast =
+    render-math (config |> Option.unwrap-or DeriveConfig.default) ast
 
 end
 
 module DeriveDSL : sig
+  %% {1 DSL}
+  %% [DeriveDSL] provides a set of functions that constructs an ast of a
+  %% derivation tree. We recommend to write [open DeriveDSL in] inside
+  %% [\proven] so that those functions will not conflict with other names.
 
-    % DSL
-    val derive: math -> DeriveAst.t
-    val by: inline-text -> DeriveAst.t -> DeriveAst.t
-    val byOp: inline-text -> DeriveAst.t -> DeriveAst.t
-    val from: DeriveAst.t list -> DeriveAst.t -> DeriveAst.t
-    val withLine: DeriveLine.t -> DeriveAst.t -> DeriveAst.t
+  %% {2 Basic constructs}
 
-    val assume: math -> DeriveAst.t
+  val derive: math -> DeriveAst.t
+  %% [dervive ${math}] constructs a derivation tree with
+  %% - a conclusion being [math]
+  %% - no assumptions
+  %% - no labels
+  %% - a normal line
 
-    % Lines
-    val standard-line : DeriveLine.t
-    val no-line       : DeriveLine.t
-    val dotted-line   : length -> length -> DeriveLine.t
+  val assume: math -> DeriveAst.t
+  %% [dervive ${math}] constructs a derivation tree with
+  %% - a conclusion being [math]
+  %% - no assumptions
+  %% - no labels
+  %% - no line
+
+  val by: inline-text -> DeriveAst.t -> DeriveAst.t
+  %% [ast |> by {label}] constructs a derivation tree where [name] is put
+  %% as a lablel on the side of [ast]. It is put on left by default,
+  %% but you can customize it by applying
+  %% [DeriveConfig.set-main-label-position] to [config] parameter of [\proven].
+  %% When [ast] already has a label on the same side, [label] will override it.
+
+  val byOp: inline-text -> DeriveAst.t -> DeriveAst.t
+  %% [ast |> byOp {label}] constructs a derivation tree almost same as
+  %% [ast |> by {label}] while its side is the opposite of [by].
+  %% It is put on right by default, but you can customize it by applying
+  %% [DeriveConfig.set-main-label-position] to [config] parameter of [\proven].
+  %% When [ast] already has a label on the same side, [label] will override it.
+
+  val from: DeriveAst.t list -> DeriveAst.t -> DeriveAst.t
+  %% [ast |> from assumptions] constructs a derivation tree where assumptions
+  %% of [ast] are set as [assumptions]. When [from] already has assumptions,
+  %% [assumptions] will overrider them.
+
+  val withLine: DeriveLine.t -> DeriveAst.t -> DeriveAst.t
+  %% [ast |> withLine line] constructs a derivation tree where the derivation line of
+  %% [ast] is set as [line]. [line] will override the existing line of [ast].
+
+  %% {2 Lines}
+  %% Lines that can be given to [withLine]
+
+  val standard-line : DeriveLine.t
+  %% [standard-line] is a solid line
+
+  val no-line       : DeriveLine.t
+  %% [no-line] is no line
+
+  val dotted-line   : length -> length -> DeriveLine.t
+  %% [dotted-line dot-length spacing] is a dotted line where the length of
+  %% dots are [dot-length] and spacing is [spacing]
 
 end = struct
 
-    let standard-line = DeriveLine.standard-line
-    let no-line = DeriveLine.no-line
-    let dotted-line = DeriveLine.dotted-line
+  let derive conclusion = DeriveAst.make None None conclusion [] None
+  let assume assumption =
+      let no-line = Option.some(DeriveLine.no-line) in
+      DeriveAst.make None None assumption [] no-line
+  let by label-text ast = ast |> DeriveAst.set-main-label label-text
+  let byOp label-text ast = ast |> DeriveAst.set-sub-label label-text
+  let from assumptions ast = ast |> DeriveAst.set-assumptions assumptions
+  let withLine line ast = ast |> DeriveAst.set-line line
 
-    let derive conclusion = DeriveAst.make None None conclusion [] None
-
-    let assume assumption =
-        let no-line = Option.some(DeriveLine.no-line) in
-        DeriveAst.make None None assumption [] no-line
-
-    let by label-text ast = ast |> DeriveAst.set-main-label label-text
-    let byOp label-text ast = ast |> DeriveAst.set-sub-label label-text
-    let from assumptions ast = ast |> DeriveAst.set-assumptions assumptions
-    let withLine line ast = ast |> DeriveAst.set-line line
+  let standard-line = DeriveLine.standard-line
+  let no-line = DeriveLine.no-line
+  let dotted-line = DeriveLine.dotted-line
 
 end

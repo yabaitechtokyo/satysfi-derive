@@ -1,0 +1,58 @@
+@require: gr
+
+module DeriveLine : sig
+
+  type t
+  %% [t] represents style of a derivation line
+
+  val make : (context -> point -> length -> length -> graphics list) -> t
+  %% [make f] creates a value of [t] where [f ctx point width height] returns
+  %% a list of graphics that displays a line with [width] and [height]
+  %% starting from [point].
+
+  val render : t -> context -> point -> length -> length -> graphics list
+  %% [render line ctx point eidth height] returns a list of graphics
+  %% that displays a line with [width] and [height] starting from [point].
+
+  val standard-line : t
+  %% solid line
+
+  val no-line : t
+  %% no line
+
+  val dotted-line : length -> length -> t
+  %% [dotted-line dot-len spacing] is a dotted line where dot length is
+  %% [dot-len] and spacing is [spacing]
+
+end = struct
+
+  type t = context -> point -> length -> length -> graphics list
+
+  let render line ctx pt width thickness = line ctx pt width thickness
+
+  let make line = line
+
+  let standard-line = fun ctx pt width thickness -> (
+    let color = get-text-color ctx in
+    match pt with
+    | (x, y) ->
+      [ fill color (Gr.rectangle pt (x +' width, y +' thickness)) ]
+  )
+
+  let no-line = fun _ _ _ _ -> []
+
+  let dotted-line = fun dotlen spacing ->
+    (fun ctx pt width thickness -> (
+      let color = get-text-color ctx in
+      let-rec write-dots x y len =
+        if len <' dotlen then
+          [fill color (Gr.rectangle (x, y) (x +' len, y +' thickness))]
+        else if len <' (dotlen +' spacing) then
+          [fill color (Gr.rectangle (x, y) (x +' dotlen, y +' thickness))]
+        else
+          (fill color (Gr.rectangle (x, y) (x +' dotlen, y +' thickness)))
+          :: (write-dots (x +' dotlen +' spacing) y (len -' dotlen -' spacing)) in
+        match pt with
+        | (x, y) -> write-dots x y width))
+
+end
