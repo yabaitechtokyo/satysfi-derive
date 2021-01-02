@@ -112,4 +112,31 @@ Using the `DeriveConfig` module ([source code](https://github.com/yabaitechtokyo
 
 ![layout](images/layout.png)
 
+If not specified, `DeriveConfig.default` will be used as a default configuration. If you want to use your own config, pass it to the optional argument of `\proven`.
+
+```ml
+open Derive in
+let my-derive-config = open DeriveConfig in
+    default
+    |> set-main-label-position LabelRight
+    |> set-default-line (DeriveLine.dotted-line 5pt 5pt)
+    |> set-line-vertical-margin 10pt
+    |> set-line-horizontal-margin 10pt
+    |> set-bar-thickness 10pt
+    |> set-assumption-spacing 30pt
+in
+...
+${
+  \proven ?:!(my-derive-config) !(
+    open DeriveDSL in
+    derive ${ \Gamma \vdash \Delta }
+    |> by {Cut}
+    |> from [
+      assume ${\Gamma \vdash \Delta, A};
+      assume ${\Gamma, A \vdash \Delta}
+    ]
+  )
+}
+```
+
 That is pretty much the crash cource. Enjoy life with SATySFi!
